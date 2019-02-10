@@ -13,7 +13,7 @@ A small frontend to show TFL Bikes availability around various location of inter
 
 ## How it works
 
-No backend needed. It's only 200 lines of Javascript, querying [TFL's public API](https://api.tfl.gov.uk/swagger/ui/index.html?url=/swagger/docs/v1#!/BikePoint/BikePoint_GetAll) and interpreting the results.
+No backend needed. It's 200 lines of Javascript, querying [TFL's public API](https://api.tfl.gov.uk/swagger/ui/index.html?url=/swagger/docs/v1#!/BikePoint/BikePoint_GetAll) and interpreting the results.
 
 ## Configuration
 
