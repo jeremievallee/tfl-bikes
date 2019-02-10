@@ -1,3 +1,30 @@
+// tfl.js
+
+///////////////////////
+// Variables Setting //
+///////////////////////
+
+const terminals = [
+  "BikePoints_307",
+  "BikePoints_584",
+  "BikePoints_261",
+  "BikePoints_163",
+  "BikePoints_209"
+]
+
+const app = document.getElementById('root');
+const container = document.createElement('div');
+container.setAttribute('class', 'container');
+app.appendChild(container);
+row = document.createElement('div');
+row.setAttribute('class', 'row');
+container.appendChild(row);
+var terminalsLength = terminals.length;
+
+///////////////
+// Functions //
+///////////////
+
 function search(nameKey, myArray){
   for (var i=0; i < myArray.length; i++) {
       if (myArray[i].key === nameKey) {
@@ -106,18 +133,49 @@ function getCard(){
   return card;
 }
 
-const app = document.getElementById('root');
-const container = document.createElement('div');
-container.setAttribute('class', 'container');
-app.appendChild(container);
-row = document.createElement('div');
-row.setAttribute('class', 'row');
-container.appendChild(row);
+function getCardWrapper(terminal_data){
+  // Generate Card Image
+  card_img = getCardImg(terminal_data);
+  // Generate Progress Bar object
+  progress_bar = getProgressBar(terminal_data);
+  // Generate Card Title
+  card_title = getCardTitle(terminal_data);
+  // Generate Date Info LI
+  last_updated = getLastUpdated(terminal_data);
+  // Generate Locked Info LI
+  locked = getLocked(terminal_data);
+  // Generate List UL
+  card_list = getCardList();
+  card_list.appendChild(last_updated);
+  card_list.appendChild(locked);
+  // Generate Card Body
+  card_body = getCardBody();
+  // Add Title and Progress Bar to Card Body
+  card_body.appendChild(card_img);
+  card_body.appendChild(card_title);
+  card_body.appendChild(progress_bar);
+  // Generate Card Maps Link
+  card_maps_link = getMapsLink(terminal_data);
+  // Generate Main Card
+  card = getCard();
+  // Add Card Body to Main Card
+  card.appendChild(card_body);
+  // Add List UL to Main Card
+  card.appendChild(card_list);
+  card.appendChild(card_maps_link);
+  card_wrapper = document.createElement('div');
+  card_wrapper.setAttribute('class', 'col-sm-4');
+  card_wrapper.appendChild(card);
+  return card_wrapper;
+}
+
+/////////////////////////////////////
+// Get all cards when loading page //
+/////////////////////////////////////
+
 window.onload = function(){
   var f = (function(){
     var xhr = [], i;
-    var terminals = ["BikePoints_307","BikePoints_584","BikePoints_261","BikePoints_163","BikePoints_209"]
-    var terminalsLength = terminals.length;
     for(i = 0; i < terminalsLength; i++){
       (function(i){
         xhr[i] = new XMLHttpRequest();
@@ -126,38 +184,7 @@ window.onload = function(){
         xhr[i].onreadystatechange = function(){
           if (xhr[i].readyState === 4 && xhr[i].status === 200){
             var terminal_data = getTerminalData(xhr[i].responseText)
-            // Generate Card Image
-            card_img = getCardImg(terminal_data);
-            // Generate Progress Bar object
-            progress_bar = getProgressBar(terminal_data);
-            // Generate Card Title
-            card_title = getCardTitle(terminal_data);
-            // Generate Date Info LI
-            last_updated = getLastUpdated(terminal_data);
-            // Generate Locked Info LI
-            locked = getLocked(terminal_data);
-            // Generate List UL
-            card_list = getCardList();
-            card_list.appendChild(last_updated);
-            card_list.appendChild(locked);
-            // Generate Card Body
-            card_body = getCardBody();
-            // Add Title and Progress Bar to Card Body
-            card_body.appendChild(card_img);
-            card_body.appendChild(card_title);
-            card_body.appendChild(progress_bar);
-            // Generate Card Maps Link
-            card_maps_link = getMapsLink(terminal_data);
-            // Generate Main Card
-            card = getCard();
-            // Add Card Body to Main Card
-            card.appendChild(card_body);
-            // Add List UL to Main Card
-            card.appendChild(card_list);
-            card.appendChild(card_maps_link);
-            card_wrapper = document.createElement('div');
-            card_wrapper.setAttribute('class', 'col-sm-4');
-            card_wrapper.appendChild(card);
+            card_wrapper = getCardWrapper(terminal_data);
             row.appendChild(card_wrapper);
           }
         };
